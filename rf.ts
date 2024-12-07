@@ -35,8 +35,8 @@ class ReactiveForm {
         let input: HTMLInputElement = this.allSections[id].querySelector('input') as HTMLInputElement;
 
         if (input.value != "") {
-            if (input.getAttribute('validate') !== "")
-                type = input.getAttribute('validate')
+            if (input.getAttribute('rf-validate') !== "")
+                type = input.getAttribute('rf-validate')
             else return -1
 
             if (type == 'email') this.validateEmail(id)
