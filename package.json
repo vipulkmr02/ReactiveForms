@@ -1,0 +1,25 @@
+{
+  "name": "reactive-forms",
+  "version": "1.0.0",
+  "description": " Access your form's input values conviniently using DOM and add validation to your forms, inspired by Angular Reactive Forms",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vipulkmr02/ReactiveForms.git"
+  },
+  "keywords": [
+    "forms",
+    "html",
+    "js",
+    "reactiveforms"
+  ],
+  "author": "Vipul Kumar Gupta",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/vipulkmr02/ReactiveForms/issues"
+  },
+  "homepage": "https://github.com/vipulkmr02/ReactiveForms#readme"
+}
