@@ -1,6 +1,6 @@
 {
   "name": "reactive-forms-v",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": " Access your form's input values conveniently using DOM and add validation to your forms, inspired by Angular Reactive Forms",
   "main": "index.js",
   "scripts": {
