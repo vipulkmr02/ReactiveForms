@@ -1,9 +1,13 @@
 class ReactiveForm {
     constructor(form) {
+        this.attributes = {
+            'validate': 'rf-validate',
+            'message': 'rf-message'
+        };
         this.formElement = form;
         this.allSections = form.querySelectorAll(".form-sec");
         this.allSections.forEach((x) => {
-            let rfMessage = x.querySelector("[rf-message]");
+            let rfMessage = x.querySelector(`[${this.attributes['message']}]`);
             if (rfMessage)
                 rfMessage.style.display = 'none';
         });
@@ -16,7 +20,7 @@ class ReactiveForm {
         }
     }
     hideMessage(id) {
-        let sr = this.allSections[id].querySelector('[rf-message]');
+        let sr = this.allSections[id].querySelector(`[${this.attributes['message']}]`);
         if (sr)
             sr.style.display = 'none';
     }
@@ -24,8 +28,8 @@ class ReactiveForm {
         let type;
         let input = this.allSections[id].querySelector('input');
         if (input.value != "") {
-            if (input.getAttribute('rf-validate') !== "")
-                type = input.getAttribute('rf-validate');
+            if (input.getAttribute(this.attributes['validate']) !== "")
+                type = input.getAttribute(this.attributes['validate']);
             else
                 return -1;
             if (type == 'email')
@@ -44,7 +48,7 @@ class ReactiveForm {
     }
     validateConfirmPassword(id) {
         let pwd = this.passwordInput.value;
-        let confirmPwd = this.allSections[id].querySelector('input[validate=confirm-password]');
+        let confirmPwd = this.allSections[id].querySelector(`input[${this.attributes['validate']}=confirm-password]`);
         if (pwd === confirmPwd.value)
             this.hideMessage(id);
         else
@@ -109,7 +113,7 @@ class ReactiveForm {
         }
     }
     wrongValue(id, msg) {
-        let x = this.allSections[id].querySelector('[rf-message]');
+        let x = this.allSections[id].querySelector(`[${this.attributes['message']}]`);
         x.style.display = '';
         x.innerHTML = msg;
     }
