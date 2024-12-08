@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "buildloop": "while true; do tsc; [[ $? -eq 0 ]] && echo -n Build ✔️\r;done"
+    "buildloop": "while true; do tsc; [[ $? -eq 0 ]] && echo -n Build ✔️\r;done",
+	"build": "tsc"
+	
   },
   "repository": {
     "type": "git",
