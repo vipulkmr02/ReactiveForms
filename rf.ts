@@ -130,7 +130,7 @@ class ReactiveForm {
         x.innerHTML = msg;
     }
 
-    get(name: string) { return this.getByName(name); }
+    get(name: string, label = false) { return label ? this.getByLabel(name) : this.getByName(name); }
 
     getAll() {
         // return an object with the keys of input's name and value as the input's value
@@ -143,12 +143,18 @@ class ReactiveForm {
                 }, {});
     }
 
-    private getByName(name: string): string| null {
+    private getByName(name: string): string | null {
         let input = this.formElement.querySelector('input[name="' + name + '"]') as HTMLInputElement;
         return input ? input.value : null;
     }
 
-    private getByLabel(label: string) { }
+    private getByLabel(label: string) {
+        this.allSections.forEach((section: HTMLDivElement) => {
+            let localLabel: string = section.querySelector('label')!.textContent!;
+            if (localLabel === label) return section.querySelector('input')!.value ?? "";
+        })
+
+    }
 
 }
 
