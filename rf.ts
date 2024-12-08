@@ -27,7 +27,7 @@ class ReactiveForm {
 
     private hideMessage(id: number) {
         let sr = this.allSections[id].querySelector('[rf-message]') as HTMLDivElement;
-        sr.style.display = 'none';
+        if (sr) sr.style.display = 'none';
     }
 
     private validateField(id: number) {
@@ -130,7 +130,9 @@ class ReactiveForm {
         x.innerHTML = msg;
     }
 
-    get(name: string, label = false) { return label ? this.getByLabel(name) : this.getByName(name); }
+    get(name: string, label: boolean = false) {
+        return label ? this.getByLabel(name) : this.getByName(name); 
+    }
 
     getAll() {
         // return an object with the keys of input's name and value as the input's value
