@@ -1,7 +1,7 @@
 {
-  "name": "reactive-forms",
+  "name": "reactive-forms-v",
   "version": "1.0.0",
-  "description": " Access your form's input values conviniently using DOM and add validation to your forms, inspired by Angular Reactive Forms",
+  "description": " Access your form's input values conveniently using DOM and add validation to your forms, inspired by Angular Reactive Forms",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
