@@ -7,12 +7,16 @@ class ReactiveForm {
     private formElement: HTMLFormElement;
     private allSections: NodeListOf<HTMLDivElement>;
     private passwordInput: HTMLInputElement;
+    private attributes: { [x: string]: string } = {
+        'validate': 'rf-validate',
+        'message': 'rf-message'
+    };
 
     constructor(form: HTMLFormElement) {
         this.formElement = form;
         this.allSections = form.querySelectorAll(".form-sec");
         this.allSections.forEach((x: HTMLDivElement) => {
-            let rfMessage: HTMLDivElement = x.querySelector("[rf-message]") as HTMLDivElement;
+            let rfMessage: HTMLDivElement = x.querySelector(`[${this.attributes['message']}]`) as HTMLDivElement;
             if (rfMessage) rfMessage.style.display = 'none';
         })
         this.passwordInput = this.formElement.querySelector("input[type=password]") as HTMLInputElement;
@@ -26,7 +30,7 @@ class ReactiveForm {
     }
 
     private hideMessage(id: number) {
-        let sr = this.allSections[id].querySelector('[rf-message]') as HTMLDivElement;
+        let sr = this.allSections[id].querySelector(`[${this.attributes['message']}]`) as HTMLDivElement;
         if (sr) sr.style.display = 'none';
     }
 
@@ -35,8 +39,8 @@ class ReactiveForm {
         let input: HTMLInputElement = this.allSections[id].querySelector('input') as HTMLInputElement;
 
         if (input.value != "") {
-            if (input.getAttribute('rf-validate') !== "")
-                type = input.getAttribute('rf-validate')
+            if (input.getAttribute(this.attributes['validate']) !== "")
+                type = input.getAttribute(this.attributes['validate'])
             else return -1
 
             if (type == 'email') this.validateEmail(id)
@@ -49,7 +53,7 @@ class ReactiveForm {
 
     private validateConfirmPassword(id: number) {
         let pwd = this.passwordInput.value;
-        let confirmPwd = this.allSections[id].querySelector('input[validate=confirm-password]') as HTMLInputElement;
+        let confirmPwd = this.allSections[id].querySelector(`input[${this.attributes['validate']}=confirm-password]`) as HTMLInputElement;
 
         if (pwd === confirmPwd.value) this.hideMessage(id);
         else this.wrongValue(id, "Passwords do not match");
@@ -125,13 +129,13 @@ class ReactiveForm {
     }
 
     private wrongValue(id: number, msg: string) {
-        let x: HTMLDivElement = this.allSections[id].querySelector('[rf-message]') as HTMLDivElement;
+        let x: HTMLDivElement = this.allSections[id].querySelector(`[${this.attributes['message']}]`) as HTMLDivElement;
         x.style.display = '';
         x.innerHTML = msg;
     }
 
     get(name: string, label: boolean = false) {
-        return label ? this.getByLabel(name) : this.getByName(name); 
+        return label ? this.getByLabel(name) : this.getByName(name);
     }
 
     getAll() {
