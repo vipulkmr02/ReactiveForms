@@ -48,7 +48,7 @@ class ReactiveForm {
     }
     validateConfirmPassword(id) {
         let pwd = this.passwordInput.value;
-        let confirmPwd = this.allSections[id].querySelector(`input[${this.attributes['validate']}=confirm-password]`);
+        let confirmPwd = this.allSections[id].querySelector(`input[${this.attributes['validate']}]=confirm-password]`);
         if (pwd === confirmPwd.value)
             this.hideMessage(id);
         else
