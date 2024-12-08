@@ -1,13 +1,12 @@
 {
   "name": "reactive-forms-v",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": " Access your form's input values conveniently using DOM and add validation to your forms, inspired by Angular Reactive Forms",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "buildloop": "while true; do tsc; [[ $? -eq 0 ]] && echo -n Build ✔️\r;done",
-	"build": "tsc"
-	
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
