@@ -1,24 +1,18 @@
 class ReactiveForm {
-    constructor(form) {
-        this.attributes = {
-            'validate': 'rf-validate',
-            'message': 'rf-message'
-        };
-        this.formElement = form;
-        this.allSections = form.querySelectorAll(".form-sec");
-        this.allSections.forEach((x) => {
-            let rfMessage = x.querySelector(`[${this.attributes['message']}]`);
-            if (rfMessage)
-                rfMessage.style.display = 'none';
-        });
-        this.passwordInput = this.formElement.querySelector("input[type=password]");
-        for (let i = 0; i < this.allSections.length; i++) {
-            let section = this.allSections[i];
-            let inputElement = section.querySelector('input');
-            section.addEventListener('input', (_event) => this.validateField(i));
-            this.validateField(i);
-        }
+    valid() {
+        return this.empty() ? false :
+            Array.from(this.allSections).every((x) => {
+                let e = x.querySelector(`[${this.attributes['message']}]`);
+                return e ? e.style.display === 'none' : true;
+            });
     }
+    empty() {
+        return Array.from(this.allSections).some((x) => {
+            let input = x.querySelector('input');
+            return input.value === "";
+        });
+    }
+    memoryExists() { return localStorage.getItem(this.storageID) ? true : false; }
     hideMessage(id) {
         let sr = this.allSections[id].querySelector(`[${this.attributes['message']}]`);
         if (sr)
@@ -47,8 +41,12 @@ class ReactiveForm {
             this.hideMessage(id);
     }
     validateConfirmPassword(id) {
+        if (!this.passwordInput) {
+            console.error("No Password input in the form");
+            return;
+        }
         let pwd = this.passwordInput.value;
-        let confirmPwd = this.allSections[id].querySelector(`input[${this.attributes['validate']}]=confirm-password]`);
+        let confirmPwd = this.allSections[id].querySelector(`input[${this.attributes['validate']}=confirm-password]`);
         if (pwd === confirmPwd.value)
             this.hideMessage(id);
         else
@@ -56,7 +54,6 @@ class ReactiveForm {
     }
     validatePhone(id) {
         const phoneRegex = /^\d{10}$/;
-        let input = this.allSections[id].children[1];
         this.validateRegEx(id, phoneRegex, "Invalid Phone No.");
     }
     validatePassword(id) {
@@ -78,8 +75,6 @@ class ReactiveForm {
                 message: "Should have at least <strong>1</strong> symbol"
             }
         ];
-        let input = this.allSections[id].children[1];
-        let pwd = input.value;
         this.validateMultipleRules(id, passwordRules);
     }
     validateEmail(id) {
@@ -139,6 +134,60 @@ class ReactiveForm {
             if (localLabel === label)
                 return (_a = section.querySelector('input').value) !== null && _a !== void 0 ? _a : "";
         });
+    }
+    saveToLocal() {
+        let formData = this.getAll();
+        let identifier = this.storageID;
+        localStorage.setItem(identifier, JSON.stringify(formData));
+    }
+    getFromLocal() {
+        if (!this.memoryExists())
+            return;
+        let data = localStorage.getItem(this.storageID);
+        return data ? JSON.parse(data) : {};
+    }
+    fillFromLocal() {
+        let json = this.getFromLocal();
+        Object.keys(json).forEach((key) => this.fill(key, json[key]));
+    }
+    fill(name, value) {
+        this.allSections.forEach((section) => {
+            let input = section.querySelector(`input[name=${name}]`);
+            if (input)
+                input.value = value;
+        });
+    }
+    enableMemory() { this.memory = true; }
+    disableMemory() {
+        localStorage.removeItem(this.storageID);
+        this.memory = false;
+    }
+    constructor(form) {
+        this.attributes = {
+            'validate': 'rf-validate',
+            'message': 'rf-message'
+        };
+        this.memory = false;
+        this.formElement = form;
+        this.allSections = form.querySelectorAll(".form-sec");
+        this.allSections.forEach((x) => {
+            let rfMessage = x.querySelector(`[${this.attributes['message']}]`);
+            if (rfMessage)
+                rfMessage.style.display = 'none';
+        });
+        this.storageID = `${this.formElement.id}_rf`;
+        this.passwordInput = this.formElement.querySelector("input[type=password]");
+        if (this.memoryExists())
+            this.fillFromLocal();
+        for (let i = 0; i < this.allSections.length; i++) {
+            let section = this.allSections[i];
+            section.addEventListener('input', (_event) => {
+                if (this.memory)
+                    this.saveToLocal();
+                this.validateField(i);
+            });
+            this.validateField(i);
+        }
     }
 }
 export default ReactiveForm;
